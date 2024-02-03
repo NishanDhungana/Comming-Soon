@@ -3,24 +3,24 @@ class BackgroundImage {
     this.uniforms = {
       resolution: {
         type: 'v2',
-        value: new THREE.Vector2(window.innerWidth, window.innerHeight),
-      },
+        value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+
       imageResolution: {
         type: 'v2',
-        value: new THREE.Vector2(2048, 1356),
-      },
+        value: new THREE.Vector2(2048, 1356) },
+
       texture: {
         type: 't',
-        value: null,
-      },
-    };
+        value: null } };
+
+
     this.obj = null;
   }
   init(src, callback) {
     const loader = new THREE.TextureLoader();
-    loader.crossOrigin = '*'; 
+    loader.crossOrigin = '*';
     loader.load(
-      src, (tex) => {
+    src, tex => {
       tex.magFilter = THREE.NearestFilter;
       tex.minFilter = THREE.NearestFilter;
       this.uniforms.texture.value = tex;
@@ -30,10 +30,10 @@ class BackgroundImage {
   }
   createObj() {
     return new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(2, 2),
-      new THREE.RawShaderMaterial({
-        uniforms: this.uniforms,
-        vertexShader: `attribute vec3 position;
+    new THREE.PlaneBufferGeometry(2, 2),
+    new THREE.RawShaderMaterial({
+      uniforms: this.uniforms,
+      vertexShader: `attribute vec3 position;
           attribute vec2 uv;
 
           varying vec2 vUv;
@@ -43,7 +43,7 @@ class BackgroundImage {
             gl_Position = vec4(position, 1.0);
           }
         `,
-        fragmentShader: `precision highp float;
+      fragmentShader: `precision highp float;
 
           uniform vec2 resolution;
           uniform vec2 imageResolution;
@@ -63,39 +63,39 @@ class BackgroundImage {
               );
             gl_FragColor = texture2D(texture, uv);
           }
-        `,
-      })
-    );
+        ` }));
+
+
   }
   resize() {
     this.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
-  }
-}
+  }}
+
 
 class PostEffect {
   constructor(texture) {
     this.uniforms = {
       time: {
         type: 'f',
-        value: 0
-      },
+        value: 0 },
+
       resolution: {
         type: 'v2',
-        value: new THREE.Vector2(window.innerWidth, window.innerHeight)
-      },
+        value: new THREE.Vector2(window.innerWidth, window.innerHeight) },
+
       texture: {
         type: 't',
-        value: texture,
-      },
-    };
+        value: texture } };
+
+
     this.obj = this.createObj();
   }
   createObj() {
     return new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(2, 2),
-      new THREE.RawShaderMaterial({
-        uniforms: this.uniforms,
-        vertexShader: `attribute vec3 position;
+    new THREE.PlaneBufferGeometry(2, 2),
+    new THREE.RawShaderMaterial({
+      uniforms: this.uniforms,
+      vertexShader: `attribute vec3 position;
           attribute vec2 uv;
           
           varying vec2 vUv;
@@ -105,7 +105,7 @@ class PostEffect {
             gl_Position = vec4(position, 1.0);
           }
         `,
-        fragmentShader: `precision highp float;
+      fragmentShader: `precision highp float;
         
           uniform float time;
           uniform vec2 resolution;
@@ -267,17 +267,17 @@ class PostEffect {
           
             gl_FragColor = vec4(r, g, b, 1.0) * (1.0 - bnMask - bnMask2) + (whiteNoise + blockNoise + blockNoise2 - waveNoise);
           }
-        `,
-      })
-    );
+        ` }));
+
+
   }
   render(time) {
     this.uniforms.time.value += time;
   }
   resize() {
     this.uniforms.resolution.value.set(window.innerWidth, window.innerHeight);
-  }
-}
+  }}
+
 
 class ConsoleSignature {
   constructor() {
@@ -288,23 +288,23 @@ class ConsoleSignature {
   show() {
     if (navigator.userAgent.toLowerCase().indexOf('chrome') > -1) {
       const args = [
-        `\n%c ${this.message} %c%c ${this.url} \n\n`,
-        'color: #fff; background: #222; padding:3px 0;',
-        'padding:3px 1px;',
-        'color: #fff; background: #47c; padding:3px 0;',
-      ];
+      `\n%c ${this.message} %c%c ${this.url} \n\n`,
+      'color: #fff; background: #222; padding:3px 0;',
+      'padding:3px 1px;',
+      'color: #fff; background: #47c; padding:3px 0;'];
+
       console.log.apply(console, args);
     } else if (window.console) {
       console.log(`${this.message} ${this.url}`);
     }
-  }
-}
+  }}
+
 
 const debounce = (callback, duration) => {
   var timer;
-  return function(event) {
+  return function (event) {
     clearTimeout(timer);
-    timer = setTimeout(function(){
+    timer = setTimeout(function () {
       callback(event);
     }, duration);
   };
@@ -313,8 +313,8 @@ const debounce = (callback, duration) => {
 const canvas = document.getElementById('canvas-webgl');
 const renderer = new THREE.WebGLRenderer({
   antialias: false,
-  canvas: canvas,
-});
+  canvas: canvas });
+
 const renderBack1 = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
 const scene = new THREE.Scene();
 const sceneBack = new THREE.Scene();
@@ -342,23 +342,23 @@ const resizeWindow = () => {
   postEffect.resize();
   renderBack1.setSize(window.innerWidth, window.innerHeight);
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
+};
 const render = () => {
   const time = clock.getDelta();
   renderer.render(sceneBack, cameraBack, renderBack1);
   postEffect.render(time);
   renderer.render(scene, camera);
-}
+};
 const renderLoop = () => {
   render();
   requestAnimationFrame(renderLoop);
-}
+};
 
 const on = () => {
   window.addEventListener('resize', debounce(() => {
     resizeWindow();
   }), 1000);
-}
+};
 
 const init = () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -366,13 +366,13 @@ const init = () => {
   cameraBack.position.set(0, 0, 100);
   cameraBack.lookAt(new THREE.Vector3());
 
-  bgImg.init('http://www.tplh.net/file/osaka01.jpg', () => {
+  bgImg.init('191.jpg', () => {
     sceneBack.add(bgImg.obj);
     scene.add(postEffect.obj);
-  })
+  });
 
   on();
   resizeWindow();
   renderLoop();
-}
+};
 init();
