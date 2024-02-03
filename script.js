@@ -355,7 +355,7 @@ const init = () => {
   cameraBack.position.set(0, 0, 100);
   cameraBack.lookAt(new THREE.Vector3());
 
-  bgImg.init('image.png', () => {
+  bgImg.init('191.jpg.', () => {
     sceneBack.add(bgImg.obj);
     scene.add(postEffect.obj);
   });
