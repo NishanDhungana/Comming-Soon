@@ -117,17 +117,6 @@ class PostEffect {
             return fract(sin(dot(c.xy ,vec2(12.9898,78.233))) * 43758.5453);
           }
 
-          //
-          // Description : Array and textureless GLSL 2D/3D/4D simplex
-          //               noise functions.
-          //      Author : Ian McEwan, Ashima Arts.
-          //  Maintainer : ijm
-          //     Lastmod : 20110822 (ijm)
-          //     License : Copyright (C) 2011 Ashima Arts. All rights reserved.
-          //               Distributed under the MIT License. See LICENSE file.
-          //               https://github.com/ashima/webgl-noise
-          //
-
           vec3 mod289(vec3 x) {
             return x - floor(x * (1.0 / 289.0)) * 289.0;
           }
@@ -281,8 +270,8 @@ class PostEffect {
 
 class ConsoleSignature {
   constructor() {
-    this.message = `created by yoichi kobayashi`;
-    this.url = `http://www.tplh.net`;
+    this.message = `created by Nishan Dhungana`;
+    this.url = `http://www.nishandhungana.com`;
     this.show();
   }
   show() {
@@ -366,7 +355,7 @@ const init = () => {
   cameraBack.position.set(0, 0, 100);
   cameraBack.lookAt(new THREE.Vector3());
 
-  bgImg.init('191.jpg.', () => {
+  bgImg.init('image.png', () => {
     sceneBack.add(bgImg.obj);
     scene.add(postEffect.obj);
   });
